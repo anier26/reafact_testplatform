@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from personal.models.project import Project
 
 def say_hello(request):
     name=request.GET.get("name","")
@@ -37,7 +38,8 @@ def logout(request):
 #登录成功默认项目管理页
 @login_required
 def project_manage(request):
-    return render(request,"project.html")
+    project_all=Project.objects.all()
+    return render(request,"project.html",{"projects":project_all})
 
 # 模块管理
 @login_required
