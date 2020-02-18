@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from personal.models.project import Project
 from django.http import HttpResponse,HttpResponseRedirect
+from personal.forms import ProjectForm
 
 #登录成功默认项目管理页
 @login_required
@@ -27,6 +28,23 @@ def add_project(request):
 
 #编辑项目
 @login_required
-def edit_project(request):
+def edit_project(request,pid):
     if request.method =="GET":
-        return render(request,"project.html",{"type":"edit"})
+        if pid:
+            p=Project.objects.get(id=pid)
+            form=ProjectForm(instance=p)
+            return render(request, "project.html", {"type": "edit","form":form,"pid":pid})
+
+    elif request.method == "POST":
+        form=ProjectForm(request.POST)
+        if form.is_valid():
+            name=form.cleaned_data['name']
+            describe=form.cleaned_data['describe']
+            status=form.cleaned_data['status']
+            p=Project.objects.get(id=pid)
+            p.name=name
+            p.describe=describe
+            p.status=status
+            p.save()
+        return HttpResponseRedirect("/project/")
+
