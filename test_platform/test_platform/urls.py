@@ -15,17 +15,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
-from personal import views
+from personal.views import prject_views
+from personal.views import login_views
+from personal.views import model_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('hello/', views.say_hello),
-    path('index/', views.index),
-    path('', views.index),
-    path('accounts/login/', views.index),
-    path('logout/', views.logout),
+    path('hello/', login_views.say_hello),
+    path('index/', login_views.index),
+    path('', login_views.index),
+    path('accounts/login/', login_views.index),
+    path('logout/', login_views.logout),
 
-    path('project/', views.project_manage),
-    path('model/', views.model_manage),
+    path('project/', prject_views.project_manage),
+    path('project/add_project/', prject_views.add_project),
+    # path('project/del_project/', prject_views.del_project),
+    path('project/edit_project/', prject_views.edit_project),
+
+    path('model/', model_views.model_manage),
+
 ]

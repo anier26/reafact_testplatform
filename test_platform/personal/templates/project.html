@@ -28,7 +28,7 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-              <li class="active"><a href="#">
+            <li class="active"><a href="#">
                 <i class="glyphicon glyphicon-th-large">&nbsp</i>项目管理</a></li>
             <li><a href="/model/"><i class="glyphicon glyphicon-th">&nbsp</i>模块管理</a></li>
             <li><a href="#">接口管理</a></li>
@@ -43,44 +43,108 @@
             <li><a href="">测试工具</a></li>
           </ul>
         </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
-          <h4 class="sub-header">日常发布</h4>
-          <div class="table-responsive">
-            <table class="table table-striped">
+    {% if type == "list" %}
+    <h4 class="sub-header">日常发布
+     <button type="button" class="btn btn-sm btn-primary button-primary"
+     style="float: right;" onclick="location.href='/project/add_project/'">创建</button>
+    </h4>
+    <div class="table-responsive">
+      <table class="table table-striped">
 
-              {% for project in projects %}
-                {{project.name}}<br>
-              {% endfor %}
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>名称</th>
+            <th>描述</th>
+            <th>状态</th>
+            <th>创建时间</th>
+            <th>快捷操作</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for project in projects %}
+          <tr>
+            <td>{{project.id}}</td>
+            <td>{{project.name}}</td>
+            <td>{{project.describe}}</td>
+            <td>{% if project.status == True %}
+                    <span>开启</span>
+                {% else %}
+                    <span>关闭</span>
+                {% endif %}
+            </td>
+            <td>{{project.create_time |date:"y-m-d H:i:s"}}</td>
+            <td><a href="/project/edit_project/">编辑<i class="glyphicon glyphicon-pencil"></i></a>
+            <a href="/project/del_project/"><i class="glyphicon glyphicon-trash"></i></a></td>
 
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1,001</td>
-                  <td>Lorem</td>
-                  <td>ipsum</td>
-                  <td>dolor</td>
-                  <td>sit</td>
-                </tr>
-                <tr>
-                  <td>1,002</td>
-                  <td>amet</td>
-                  <td>consectetur</td>
-                  <td>adipiscing</td>
-                  <td>elit</td>
-                </tr>
-              </tbody>
-            </table>
+          </tr>
+          {% endfor %}
+          <tr>
+            <td>1,002</td>
+            <td>amet</td>
+            <td>consectetur</td>
+            <td>adipiscing</td>
+            <td>elit</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+
+    <!-- 添加项目-->
+    {% if type == "add" %}
+    <h4 class="sub-header">请在这里开始添加...</h4>
+    <form class="form-horizontal" method="post" action="/project/add_project/">
+      <div class="control-group">
+        <label class="control-label">项目</label>
+        <div class="controls">
+          <input type="text" name="name" class="input-xlarge">
+          <span style="color: red" >{{name_err}}</span>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">描述</label>
+        <div class="controls">
+          <div class="textarea">
+            <textarea name="describe" style="width: 178px"> </textarea>
           </div>
         </div>
       </div>
+
+
+      <div class="control-group">
+        <label class="control-label">状态</label>
+        <div class="controls" style="height: 30px">
+          <label class="radio inline" style="left: 20px;float: left;">
+            <input type="radio"  value="1" checked="checked" name="status">
+            开启
+          </label>
+           <label class="radio inline" style="left: 80px;float: left;">
+            <input type="radio" value="0" checked="checked" name="status">
+            关闭
+          </label>
+          </div>
+        </div>
+
+      <div class="control-group">
+        <div class="control">
+          <br>
+          <button class="btn btn-success">确认</button>
+        </div>
+      </div>
+    </form>
+    {% endif %}
+
+      <!-- 编辑项目-->
+    {% if type == "edit" %}
+    <h4 class="sub-header">编辑项目</h4>
+    {% endif %}
+
     </div>
+  </div>
+</div>
+
 {% endblock %}

@@ -35,13 +35,5 @@ def logout(request):
     auth.logout(request)
     return HttpResponseRedirect("/index/")
 
-#登录成功默认项目管理页
-@login_required
-def project_manage(request):
-    project_all=Project.objects.all()
-    return render(request,"project.html",{"projects":project_all})
 
-# 模块管理
-@login_required
-def model_manage(request):
-    return render(request,"model.html")
+
