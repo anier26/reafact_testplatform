@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from personal.models.project import Project
 from django.http import HttpResponse,HttpResponseRedirect
 from personal.forms import ProjectForm
+from personal.models import Project
 
 #登录成功默认项目管理页
 @login_required
@@ -23,8 +24,6 @@ def add_project(request):
             return render(request, "project.html", {"type": "add","name_err":"项目名不能为空"})
         Project.objects.create(name=name,describe=describe,status=status)
         return HttpResponseRedirect("/project/")
-
-
 
 #编辑项目
 @login_required
@@ -48,3 +47,14 @@ def edit_project(request,pid):
             p.save()
         return HttpResponseRedirect("/project/")
 
+def del_project(request,pid):
+    if request.method == "GET":
+        try:
+            project = Project.objects.get(id=pid)
+        except Project.DoesNotExist:
+            return HttpResponseRedirect("/project/")
+        else:
+            project.delete()
+        return HttpResponseRedirect("/project/")
+    else:
+        return HttpResponseRedirect("/project/")

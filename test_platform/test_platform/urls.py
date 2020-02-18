@@ -29,9 +29,12 @@ urlpatterns = [
 
     path('project/', prject_views.project_manage),
     path('project/add_project/', prject_views.add_project),
-    # path('project/del_project/', prject_views.del_project),
-    path('project/edit_project/<int:pid>', prject_views.edit_project),
+    path('project/del_project/<int:pid>/', prject_views.del_project),
+    path('project/edit_project/<int:pid>/', prject_views.edit_project),
 
     path('model/', model_views.model_manage),
+    path('model/add_model/', model_views.add_model),
+    path('model/edit_model/<int:mid>/', model_views.edit_model),
+    path('model/del_model/<int:mid>/', model_views.del_model),
 
 ]

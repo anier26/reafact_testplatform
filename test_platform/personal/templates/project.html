@@ -45,8 +45,9 @@
         </div>
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
+    <!-- 项目列表-->
     {% if type == "list" %}
-    <h4 class="sub-header">日常发布
+    <h4 class="sub-header">项目列表
      <button type="button" class="btn btn-sm btn-primary button-primary"
      style="float: right;" onclick="location.href='/project/add_project/'">创建</button>
     </h4>
@@ -77,17 +78,10 @@
             </td>
             <td>{{project.create_time |date:"y-m-d H:i:s"}}</td>
             <td><a href="/project/edit_project/{{project.id}}">编辑<i class="glyphicon glyphicon-pencil"></i></a>
-            <a href="/project/del_project/"><i class="glyphicon glyphicon-trash"></i></a></td>
-
+            <a href="/project/del_project/{{project.id}}"><i class="glyphicon glyphicon-trash"></i></a></td>
           </tr>
           {% endfor %}
-          <tr>
-            <td>1,002</td>
-            <td>amet</td>
-            <td>consectetur</td>
-            <td>adipiscing</td>
-            <td>elit</td>
-          </tr>
+
         </tbody>
       </table>
     </div>
@@ -109,7 +103,7 @@
         <label class="control-label">描述</label>
         <div class="controls">
           <div class="textarea">
-            <textarea name="describe" style="width: 178px"> </textarea>
+            <textarea name="describe" style="width: 366px;height: 106px;"> </textarea>
           </div>
         </div>
       </div>
@@ -141,22 +135,33 @@
       <!-- 编辑项目-->
     {% if type == "edit" %}
     <h4 class="sub-header">编辑项目</h4>
-    <form action="/project/edit_project/{{pid}}" method="post">
-      <!--{{form.as_p}}-->
-      <!--<input type="submit" value="submit">-->
-      <p><label for="id_name">名称:</label>
-        <input type="text" name="name" maxlength="100" required="" id="id_name">
-      </p>
-      <p><label for="id_describe">描述:</label>
-        <textarea name="describe" cols="40" rows="10" required="" id="id_describe" style="width: 286px;height: 106px;"></textarea>
-      </p>
+    <form action="/project/edit_project/{{pid}}/" method="post">
+        <div class="control-group">
+        <label class="control-label">项目名</label>
+        <div class="controls">
+          {{form.name}}
+        </div>
+    </div>
+
+       <div class="control-group">
+            <label class="control-label">描述</label>
+            <div class="controls">
+              <div class="textarea">
+                <textarea name="describe" style="width: 366px;height: 106px;"></textarea>
+              </div>
+            </div>
+       </div>
+
       <p>
         <label for="id_status">状态:</label>
         <input type="checkbox" name="status" required="" id="id_status">
       </p>
-      <input type="submit" value="submit">
-    </form>
-
+      <div class="control-group">
+        <div class="control">
+          <br>
+          <button class="btn btn-success">确认</button>
+        </div>
+      </div>
     </form>
 
     {% endif %}

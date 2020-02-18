@@ -45,36 +45,124 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
-          <h4 class="sub-header">模块列表</h4>
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1,001</td>
-                  <td>Lorem</td>
-                  <td>ipsum</td>
-                  <td>dolor</td>
-                  <td>sit</td>
-                </tr>
-                <tr>
-                  <td>1,002</td>
-                  <td>amet</td>
-                  <td>consectetur</td>
-                  <td>adipiscing</td>
-                  <td>elit</td>
-                </tr>
-              </tbody>
-            </table>
+    <!-- 模块列表-->
+    {% if type == "list" %}
+    <h4 class="sub-header">模块列表
+     <button type="button" class="btn btn-sm btn-primary button-primary"
+     style="float: right;" onclick="location.href='/model/add_model/'">创建</button>
+    </h4>
+    <div class="table-responsive">
+      <table class="table table-striped">
+
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>名称</th>
+            <th>描述</th>
+            <th>所属项目</th>
+            <th>创建时间</th>
+            <th>快捷操作</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for model in models %}
+          <tr>
+            <td>{{model.id}}</td>
+            <td>{{model.name}}</td>
+            <td>{{model.describe}}</td>
+            <td>{{model.project}}</td>
+            <td>{{model.create_time |date:"y-m-d H:i:s"}}</td>
+            <td><a href="/model/edit_model/{{model.id}}/">
+                  <i class="glyphicon glyphicon-pencil"></i>
+                </a>
+                <a href="/model/del_model/{{model.id}}/">
+                  <i class="glyphicon glyphicon-trash"></i>
+                </a>
+            </td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+
+    <!-- 添加模块-->
+    {% if type == "add" %}
+    <h4 class="sub-header">模块请在这里开始添加...</h4>
+    <form class="form-horizontal" method="post" action="/model/add_model/">
+      <div class="control-group">
+        <label class="control-label">选择项目</label>
+        <div class="controls">
+          {{form.project}}
+        </div>
+      </div>
+      <br>
+      <div class="control-group">
+        <label class="control-label">项目名</label>
+        <div class="controls">
+          {{form.name}}
+        </div>
+      </div>
+      <br>
+      <div class="control-group">
+        <label class="control-label">描述</label>
+        <div class="controls">
+          <div class="textarea">
+            <textarea name="describe" style="width: 366px;height: 106px;"></textarea>
           </div>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <div class="control">
+          <br>
+          <button class="btn btn-success">保存</button>
+        </div>
+      </div>
+    </form>
+    {% endif %}
+
+     <!-- 编辑模块-->
+    {% if type == "edit" %}
+    <h4 class="sub-header">编辑模块</h4>
+    <form action="/model/edit_model/{{id}}/" method="post">
+        <div class="control-group">
+        <label class="control-label">选择项目</label>
+        <div class="controls">
+          {{form.project}}
+        </div>
+      </div>
+      <br>
+      <div class="control-group">
+        <label class="control-label">项目名</label>
+        <div class="controls">
+          {{form.name}}
+        </div>
+      </div>
+
+      <br>
+      <div class="control-group">
+        <label class="control-label">描述</label>
+        <div class="controls">
+          <div class="textarea">
+            <textarea name="describe" style="width: 366px;height: 106px;"></textarea>
+          </div>
+        </div>
+      </div>
+      <br>
+
+      <div class="control-group">
+        <div class="control">
+          <br>
+          <button class="btn btn-success">保存</button>
+        </div>
+      </div>
+    </form>
+   {% endif %}
+
+
+
         </div>
       </div>
     </div>
