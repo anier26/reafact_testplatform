@@ -26,7 +26,13 @@ urlpatterns = [
     path('accounts/login/', views.index),
     path('logout/', views.logout),
 
+    #项目管理
     path('project/', include('project_app.urls')),
+
+    #模块管理
     path('model/', include('model_app.urls')),
+
+    #用例管理
+    path('testcase/', include('testcase_app.urls')),
 
 ]

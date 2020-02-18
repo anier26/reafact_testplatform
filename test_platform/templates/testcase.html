@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+{% extends "base.html" %}
+{% block base %}
+<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">接口测试平台</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/logout">logout</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Help</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search..." style="border-top-width: 2px;border-bottom-width: 2px;">
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+              <li ><a href="/project"> <i class="glyphicon glyphicon-th-large">&nbsp</i>项目管理</a></li>
+            <li><a href="/model"><i class="glyphicon glyphicon-th">&nbsp</i>模块管理</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="/testcase">用例管理</a></li>
+            <li><a href="">任务管理</a></li>
+            <li><a href="">持续集成</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li><a href="">mock server</a></li>
+            <li><a href="">测试工具</a></li>
+          </ul>
+        </div>
+
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+    <!-- 功能测试集合 -->
+    {% if type == "debug" %}
+    <h2 class="sub-header" style="margin-top:0px;">postman</h2>
+    <div class="input-group">
+        <span class="input-group-addon">* URL</span>
+        <input id="req_url" type="text" class="form-control" placeholder="url">
+    </div>
+    <br>
+    <div class="control-group">
+    <label>* 请求方法</label>
+        <label class="radio-inline"><input type="radio" name="req_method" id="get" value="get" checked/>GET</label>
+        <label class="radio-inline"><input type="radio" name="req_method" id="post"value="post" />POST</label>
+        <label class="radio-inline"><input type="radio" name="req_method" id="put" value="put" />PUT</label>
+        <label class="radio-inline"><input type="radio" name="req_method"  id="delete" value="delete"/>DELETE</label>
+    </div>
+    <div class="input-group">
+        <span class="input-group-addon">headers</span>
+        <input id="header" type="text" class="form-control" placeholder="header">
+    </div>
+    <br>
+    <div class="control-group">
+         <label>* 参数类型: </label>
+         <label class="radio-inline"><input type="radio" name="req_type" id="form_data" value="form_date" checked/>form-data</label>
+         <label class="radio-inline"><input type="radio" name="req_type" id="json_data"value="json_date" />JSON</label>
+    </div>
+    <div class="input-group">
+        <span class="input-group-addon">参数</span>
+        <input id="parameter" type="text" class="form-control">
+    </div>
+    <p style="color:#8B8989">说明: 以字典方式设置参数: eg {"id":1,"name":"zhangsan"}</p>
+    <button type="button" class="btn btn-primary" onclick="jsFunc()" style="float: right;margin-right: 10px">send</button>
+    <div style="margin-top: 20px;">
+        <p>返回结果:</p>
+        <textarea id="result" class="form-control" rows="10" name="text"></textarea>
+    </div>
+    {% endif %}
+
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/3.3.0/jquery.min.js"></script>
+    <script type="text/javascript">
+        function jsFunc(){
+            var url= $("#req_url").val();
+            var moethd = $('input[name="req_method"]:checked').val();
+            var header= $("#header").val();
+            var type= $('input[name="req_type"]:checked').val();
+            var parameter= $("#parameter").val();
+
+            if(url === ""){
+                window.alert("url不能为空");
+                return;
+            }
+            $.post("/testcase/debug",
+            {
+                url: url,
+                moethd: moethd,
+                header: header,
+                type: type,
+                parameter: parameter
+            },
+             function (data,status){
+                document.querySelector("#result").value=data.result;
+                });}
+
+    </script>
+
+{% endblock %}
+</body>
+</html>
