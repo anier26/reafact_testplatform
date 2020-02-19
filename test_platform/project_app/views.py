@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from project_app.forms import ProjectForm
 from project_app.models import Project
 
@@ -57,3 +57,20 @@ def del_project(request,pid):
         return HttpResponseRedirect("/project/")
     else:
         return HttpResponseRedirect("/project/")
+
+# 通过后端接口获取项目列表
+def get_project_list(request):
+    if request.method == "GET":
+        projects= Project.objects.all()
+        project_list=[]
+        for pro in projects:
+            project_dict={
+                "id":pro.id,
+                "name":pro.name
+            }
+            project_list.append(project_dict)
+        print(type(project_list))
+
+        return JsonResponse({"status":10200,"message":"success","data":project_list})
+    else:
+        return JsonResponse({"status":10100,"message":"error"})

@@ -8,4 +8,8 @@ urlpatterns = [
     path('add_project/', views.add_project),
     path('del_project/<int:pid>/', views.del_project),
     path('edit_project/<int:pid>/', views.edit_project),
+
+    path('get_project_list/', views.get_project_list),
+
+
 ]
