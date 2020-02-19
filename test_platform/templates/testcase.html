@@ -8,7 +8,7 @@
 
 {% extends "base.html" %}
 {% block base %}
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-fixed-top" style=" margin-bottom: 1px">
       <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -40,23 +40,22 @@
             <li><a href="/model"><i class="glyphicon glyphicon-th">&nbsp</i>模块管理</a></li>
           </ul>
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="/testcase">用例管理</a></li>
-            <li><a href="">任务管理</a></li>
-            <li><a href="">持续集成</a></li>
+            <li class="active"><a href="/testcase"><i class="glyphicon glyphicon-list-alt">&nbsp</i>用例管理</a></li>
+            <li><a href=""><i class="glyphicon glyphicon-list">&nbsp</i>任务管理</a></li>
           </ul>
           <ul class="nav nav-sidebar">
-            <li><a href="">mock server</a></li>
-            <li><a href="">测试工具</a></li>
+            <li><a href=""><i class="glyphicon glyphicon-log-out">&nbsp</i>mock server</a></li>
+            <li><a href=""><i class="glyphicon glyphicon-wrench">&nbsp</i>测试工具</a></li>
           </ul>
         </div>
 
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main " style=" padding-top: 10px;">
 
     <!-- 功能测试集合 -->
     {% if type == "debug" %}
-    <h2 class="sub-header" style="margin-top:0px;">postman</h2>
+    <h2 class="sub-header" style="margin-top:0px;margin-bottom: 0px;padding-bottom: 10px;border-bottom-width: 0px;">postman</h2>
     <div class="input-group">
-        <span class="input-group-addon">* URL</span>
+        <span class="input-group-addon"> URL</span>
         <input id="req_url" type="text" class="form-control" placeholder="url">
     </div>
     <br>
@@ -69,23 +68,30 @@
     </div>
     <div class="input-group">
         <span class="input-group-addon">headers</span>
-        <input id="header" type="text" class="form-control" placeholder="header">
+        <input value="{}" id="header" type="text" class="form-control" placeholder="header">
     </div>
     <br>
     <div class="control-group">
          <label>* 参数类型: </label>
          <label class="radio-inline"><input type="radio" name="req_type" id="form_data" value="form_date" checked/>form-data</label>
-         <label class="radio-inline"><input type="radio" name="req_type" id="json_data"value="json_date" />JSON</label>
+         <label class="radio-inline"><input type="radio" name="req_type" id="json_data"value="json_date" />Json</label>
     </div>
     <div class="input-group">
         <span class="input-group-addon">参数</span>
-        <input id="parameter" type="text" class="form-control">
+        <input id="parameter" type="text" class="form-control"  placeholder='说明:以字典方式设置参数:{}或者{"id":id,"name":"name"}'>
     </div>
-    <p style="color:#8B8989">说明: 以字典方式设置参数: eg {"id":1,"name":"zhangsan"}</p>
-    <button type="button" class="btn btn-primary" onclick="jsFunc()" style="float: right;margin-right: 10px">send</button>
+    <button type="button" class="btn btn-primary" onclick="sendFunc()" style="float: right;margin-top: 10px">send</button>
     <div style="margin-top: 20px;">
-        <p>返回结果:</p>
-        <textarea id="result" class="form-control" rows="10" name="text"></textarea>
+        <label>* 返回数据:</label>
+        <textarea id="result" class="form-control" rows="5" name="text"></textarea>
+    </div>
+
+    <button type="button" class="btn btn-primary" onclick="assertFunc()" style="float: right;margin-top: 10px">assert</button>
+    <div style="margin-top: 20px;">
+        <label>* 断言规则:</label>
+         <label class="radio-inline"><input type="radio" name="assert_type" id="contains" value="contains" checked/>contains</label>
+         <label class="radio-inline"><input type="radio" name="assert_type" id="matches"value="matches" />matches</label>
+        <textarea id="assert" class="form-control" rows="5" name="text"></textarea>
     </div>
     {% endif %}
 
@@ -94,28 +100,54 @@
     </div>
     <script src="https://cdn.bootcss.com/jquery/3.3.0/jquery.min.js"></script>
     <script type="text/javascript">
-        function jsFunc(){
-            var url= $("#req_url").val();
-            var moethd = $('input[name="req_method"]:checked').val();
-            var header= $("#header").val();
-            var type= $('input[name="req_type"]:checked').val();
-            var parameter= $("#parameter").val();
+        //发送
+    function sendFunc(){
+        var url= $("#req_url").val();
+        var moethd = $('input[name="req_method"]:checked').val();
+        var header= $("#header").val();
+        var type= $('input[name="req_type"]:checked').val();
+        var parameter= $("#parameter").val();
 
-            if(url === ""){
-                window.alert("url不能为空");
-                return;
-            }
-            $.post("/testcase/debug",
-            {
-                url: url,
-                moethd: moethd,
-                header: header,
-                type: type,
-                parameter: parameter
-            },
-             function (data,status){
-                document.querySelector("#result").value=data.result;
-                });}
+        if(url === ""){
+            window.alert("url不能为空");
+            return;
+        }
+        $.post("/testcase/debug",
+        {
+            url: url,
+            moethd: moethd,
+            header: header,
+            type: type,
+            parameter: parameter
+        },
+         function (data,status){
+            document.querySelector("#result").value=data.result;
+            });}
+    //断言:
+    function assertFunc() {
+        var assert_type = $('input[name="assert_type"]:checked').val();
+        var result_text = $("#result").val();
+        var assert_text = $("#assert").val();
+        console.log("得到结果",result_text);
+        console.log("断言结果",assert_text);
+
+        if(result_text === "" || assert_text === ""){
+            window.alert("文本不能为空");
+            return;
+        }
+
+         $.post("/testcase/asserts",
+        {
+            result: result_text,
+            asserts: assert_text,
+            assert_type:assert_type,
+        },
+         function (data,status){
+             alert("数据: " + data.result)
+             console.log("返回数据",data.result)
+//            document.querySelector("#result").value=data.result;
+            });
+    };
 
     </script>
 

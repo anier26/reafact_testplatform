@@ -6,4 +6,5 @@ urlpatterns = [
     #项目管理
     path('', views.testcase_manage),
     path('debug', views.debug),
+    path('asserts', views.asserts),
 ]

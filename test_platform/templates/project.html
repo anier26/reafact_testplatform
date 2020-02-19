@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block base %}
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-fixed-top" style=" margin-bottom: 1px">
       <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -33,13 +33,12 @@
             <li><a href="/model"><i class="glyphicon glyphicon-th">&nbsp</i>模块管理</a></li>
           </ul>
           <ul class="nav nav-sidebar">
-            <li><a href="/testcase">用例管理</a></li>
-            <li><a href="">任务管理</a></li>
-            <li><a href="">持续集成</a></li>
+            <li><a href="/testcase"><i class="glyphicon glyphicon-list-alt">&nbsp</i>用例管理</a></li>
+            <li><a href=""> <li><a href=""><i class="glyphicon glyphicon-list">&nbsp</i>任务管理</a></li>
           </ul>
           <ul class="nav nav-sidebar">
-            <li><a href="">mock server</a></li>
-            <li><a href="">测试工具</a></li>
+             <li><a href=""><i class="glyphicon glyphicon-log-out">&nbsp</i>mock server</a></li>
+             <li><a href=""><i class="glyphicon glyphicon-wrench">&nbsp</i>测试工具</a></li>
           </ul>
         </div>
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
