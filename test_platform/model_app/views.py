@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from model_app.models import Module
 from model_app.forms import ModelForm
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 
 
 # 模块管理
@@ -58,3 +58,22 @@ def del_model(request,mid):
         return HttpResponseRedirect("/model/")
     else:
         return HttpResponseRedirect("/model/")
+
+
+# 根据项目id返回对应模块列表
+def get_model_list(request):
+    if request.method == "POST":
+        pid = request.POST.get("pid", "")
+        if pid == "":
+            return JsonResponse({"status": 10101, "message": "error! projectId不能为空" })
+        models = Module.objects.filter(project=pid)
+        modle_list = []
+        for mod in models:
+            model_dict = {
+                "id": mod.id,
+                "name": mod.name
+            }
+            modle_list.append(model_dict)
+        return JsonResponse({"status": 10800, "message": "success", "data": modle_list})
+    else:
+        return JsonResponse({"status": 10100, "message": "error"})
