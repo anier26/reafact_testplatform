@@ -8,13 +8,21 @@ from model_app.models import Module
 from testcase_app.models import TestCase #abc
 
 
-def testcase_manage(request):
-    return render(request,"testcase.html",{"type":"debug"})
+def case_manage(request):
+    #用例列表
+    case_list=TestCase.objects.all()
+    return render(request,"case_list.html",{"cases": case_list})
+
+def case_add(request):
+    return render(request, "case_add.html")
+
+
+
 
 def debug(request):
     if request.method=="POST":
         url=request.POST.get("url","")
-        moethd=request.POST.get("moethd","")
+        method=request.POST.get("method","")
         header=request.POST.get("header","")
         type_=request.POST.get("type","")
         parameter=request.POST.get("parameter","")
@@ -23,39 +31,38 @@ def debug(request):
             header=json.loads(json_header)
         except json.decoder.JSONDecodeError:
             return  JsonResponse({"result":"headers错误"})
-
-
         json_par=parameter.replace("\'","\"")
         try:
             payload=json.loads(json_par)
         except json.decoder.JSONDecodeError:
             return  JsonResponse({"result":"参数类型错误"})
 
-        if moethd =="get":
+        if method =="get":
             if header == "":
                 r=requests.get(url,params=payload)
-                print("结果",r.json())
+                result_text=r.text
             else:
                 r=requests.get(url,params=payload,headers=header)
-                print("结果",r.json())
-        if moethd =="post":
-            if header == "":
-                r=requests.post(url,data=payload)
-                print(r.text)
-            else:
-                r = requests.post(url, params=payload, headers=header)
-                print("结果", r.text)
+                result_text = r.text
+        if method =="post":
+            if type_ =="form_data":
+                if header == "":
+                    r=requests.post(url,data=payload)
+                    result_text = r.text
+                else:
+                    r = requests.post(url, params=payload, headers=header)
+                    print("结果", r.text)
+            if type_ == "json_data":
+                if header == "":
+                    r = requests.post(url, data=payload)
+                    print("结果", r.text)
+                else:
+                    r = requests.post(url, params=payload, headers=header)
+                    result_text = r.text
 
-        if type_ == "json":
-            if header == "":
-                r = requests.post(url, data=payload)
-                print(r.text)
-            else:
-                r = requests.post(url, params=payload, headers=header)
-                print("结果", r.text)
         return JsonResponse({"result":r.text})
     else:
-        return JsonResponse({"result": "test_fail"})
+        return JsonResponse({"result": "请求错误"})
 
 def asserts(request):
     if request.method=="POST":
@@ -124,9 +131,9 @@ def save_case(request):
             return JsonResponse({"status": 10100, "message": "error! 未知的请求方法体 "})
 
         #请求类型:
-        if parameter_type == "form_date":
+        if parameter_type == "form_data":
             parameter_number = 1
-        elif parameter_type == "json_date":
+        elif parameter_type == "json_data":
             parameter_number = 2
         else:
             return JsonResponse({"status": 10100, "message": "error! 未知的请求类型 "})

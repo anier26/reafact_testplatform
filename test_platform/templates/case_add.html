@@ -53,8 +53,7 @@
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main " style=" padding-top: 10px;">
 
     <!-- 功能测试集合 -->
-    {% if type == "debug" %}
-    <h2 class="sub-header" style="margin-top:0px;margin-bottom: 0px;padding-bottom: 10px;border-bottom-width: 0px;">postman</h2>
+    <h2 class="sub-header" style="margin-top:0px;margin-bottom: 0px;padding-bottom: 10px;border-bottom-width: 0px;">添加用例</h2>
     <div class="input-group">
         <span class="input-group-addon"> URL</span>
         <input id="req_url" type="text" class="form-control" placeholder="http://">
@@ -74,8 +73,8 @@
     <br>
     <div class="control-group">
          <label>* 参数类型: </label>
-         <label class="radio-inline"><input type="radio" name="req_type" id="form_data" value="form_date" checked/>form-data</label>
-         <label class="radio-inline"><input type="radio" name="req_type" id="json_data"value="json_date" />Json</label>
+         <label class="radio-inline"><input type="radio" name="req_type" id="form_data" value="form_data" checked/>form-data</label>
+         <label class="radio-inline"><input type="radio" name="req_type" id="json_data"value="json_data" />Json</label>
     </div>
     <div class="input-group">
         <span class="input-group-addon">参数</span>
@@ -108,8 +107,6 @@
     </div>
     <button type="button" class="btn btn-primary" onclick="saveFunc()" style="margin-top: 23px;margin-left: 565px;">save</button>
 
-    {% endif %}
-
         </div>
       </div>
     </div>
@@ -135,7 +132,7 @@
     //发送
     function sendFunc(){
         var url= $("#req_url").val();
-        var moethd = $('input[name="req_method"]:checked').val();
+        var method = $('input[name="req_method"]:checked').val();
         var header= $("#header").val();
         var type= $('input[name="req_type"]:checked').val();
         var parameter= $("#parameter").val();
@@ -147,7 +144,7 @@
         $.post("/testcase/debug",
         {
             url: url,
-            moethd: moethd,
+            method: method,
             header: header,
             type: type,
             parameter: parameter
@@ -155,6 +152,7 @@
          function (data,status){
             document.querySelector("#result").value=data.result;
             });}
+
     //断言:
     function assertFunc() {
         var assert_type = $('input[name="assert_type"]:checked').val();
