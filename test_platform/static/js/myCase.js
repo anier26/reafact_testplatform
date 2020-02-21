@@ -16,7 +16,6 @@ function clearOPtion(cmb){
     }
 }
 
-
 var ProjectInit = function (_cmdProject) {
     var cmbProject = document.getElementById(_cmdProject);
     function getProjectListInfo() {
