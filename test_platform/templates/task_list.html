@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.10/dist/css/bootstrap-select.min.css">-->
+    <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.10/dist/js/bootstrap-select.min.js"></script>-->
+
 
 </head>
 <body>
@@ -39,10 +43,11 @@
           <ul class="nav nav-sidebar">
               <li ><a href="/project"> <i class="glyphicon glyphicon-th-large">&nbsp</i>项目管理</a></li>
             <li><a href="/model"><i class="glyphicon glyphicon-th">&nbsp</i>模块管理</a></li>
+
           </ul>
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="/testcase"><i class="glyphicon glyphicon-list-alt">&nbsp</i>用例管理</a></li>
-            <li><a href="/testtask"><i class="glyphicon glyphicon-list">&nbsp</i>任务管理</a></li>
+            <li><a href="/testcase"><i class="glyphicon glyphicon-list-alt">&nbsp</i>用例管理</a></li>
+            <li class="active" ><a href="/testtask"><i class="glyphicon glyphicon-list">&nbsp</i>任务管理</a></li>
           </ul>
           <ul class="nav nav-sidebar">
              <li><a href=""><i class="glyphicon glyphicon-log-out">&nbsp</i>mock server</a></li>
@@ -51,10 +56,11 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
-    <!-- 用例列表-->
-    <h4 class="sub-header">用例列表
+    <!-- 任务列表-->
+    {% if type == "list" %}
+    <h4 class="sub-header">任务列表
         <button type="button" class="btn btn-sm btn-primary button-primary"
-        style="float: right;" onclick="location.href='/testcase/case_add'">创建</button>
+        style="float: right;" onclick="location.href='/testtask/task_add'">创建</button>
     </h4>
     <div class="table-responsive">
         <table class="table table-striped">
@@ -70,22 +76,22 @@
       </tr>
     </thead>
     <tbody>
-    {% for case in cases %}
+    {% for task in tasks %}
       <tr>
-        <td>{{case.id}}</td>
-        <td>{{case.name}}</td>
-        <td>{{case.url}}</td>
-        {% if case.methods == 1%}
+        <td>{{task.id}}</td>
+        <td>{{task.name}}</td>
+        <td>{{task.url}}</td>
+        {% if task.methods == 1%}
             <td>GET</td>
         {% endif%}
-        {% if case.methods == 2%}
+        {% if task.methods == 2%}
           <td>POST</td>
       {% endif%}
         <td>{{case.create_time |date:"y-m-d H:i:s"}}</td>
-        <td><a href="/testcase/case_edit/{{case.id}}/">
+        <td><a href="/testtask/task_edit/{{tasks.id}}/">
               <i class="glyphicon glyphicon-pencil"></i>
             </a>
-            <a href="/testcase/case_del/{{case.id}}/">
+            <a href="/testtask/task_del/{{task.id}}/">
               <i class="glyphicon glyphicon-trash"></i>
             </a>
         </td>
@@ -95,30 +101,14 @@
                 </tbody>
             </table>
         </div>
-    <div>
-     <nav aria-label="Page navigation">
-      <ul class="pagination">
-        <li>
-                {% if cases.has_previous %}
-                  <a href="?page={{cases.previous_page_number}}" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                  </a>
-                {% endif %}
-        </li>
-        <li><a href="#">{{cases.number}}</a></li>
+    {% endif %}
 
-      {%  if cases.has_next %}
-          <li>
-              <a href="?page={{cases.next_page_number}}" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-      {% endif %}
-          <li><a href="#">共: {{cases.paginator.num_pages}}页</a></li>
-      </ul>
-    </nav>
+    {% if type == "add" %}
+        {% block task_add %}
+            <!-- 其他页面可以继承task_list.html页面 -->
+        {% endblock %}
+    {% endif %}
 
-    </div>
     </div>
   </div>
 </div>

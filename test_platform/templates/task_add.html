@@ -1,0 +1,45 @@
+{% extends "task_list.html" %}
+{% block task_add %}
+
+    <div>
+        <!-- 功能测试集合 -->
+        <h2 class="sub-header" style="margin-top:0px;margin-bottom: 0px;padding-bottom: 10px;border-bottom-width: 0px;">创建任务</h2>
+
+        <div style="margin-top: 10px;">
+            <p>* 任务名称:</p>
+            <input id="name" class="form-control" ></input>
+        </div>
+        <div style="margin-top: 10px;">
+            <p>* 任务描述:</p>
+            <textarea id="desc" class="form-control" rows="3" name="text"></textarea>
+        </div>
+
+         <div style="margin-top: 10px;">
+            <p>* 用例列表:</p>
+             <ul id="treeDemo" class="ztree"></ul>
+        </div>
+
+        <button type="button" class="btn btn-primary" onclick="saveFunc()" style="margin-top: 20px;margin-left: 930px;">save</button>
+
+<link href="http://cdn.bootcss.com/zTree.v3/3.5.23/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/zTree.v3/3.5.23/js/jquery.ztree.all.js"></script>
+<script type="text/javascript">
+    // 初始化用例树:
+    caseTreeInit();
+
+   function saveFunc() {
+       window.alert("click save");
+       var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+       var nodes = treeObj.getCheckedNodes(true);
+       console.log("nodes:",nodes);
+       for(let i=0; i<nodes.length; i++){
+            console.log("选中的节点",nodes[i].name);
+       }
+
+   }
+    </script>
+    </div>
+{% endblock %}
+</body>
+</html>
