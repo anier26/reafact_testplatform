@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+
+{% extends "base.html" %}
+{% block base %}
+<nav class="navbar navbar-inverse navbar-fixed-top" style=" margin-bottom: 1px">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">接口测试平台</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/logout">logout</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Help</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search..." style="border-top-width: 2px;border-bottom-width: 2px;">
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+              <li ><a href="/project"> <i class="glyphicon glyphicon-th-large">&nbsp</i>项目管理</a></li>
+            <li><a href="/model"><i class="glyphicon glyphicon-th">&nbsp</i>模块管理</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="/testcase"><i class="glyphicon glyphicon-list-alt">&nbsp</i>用例管理</a></li>
+            <li><a href=""><i class="glyphicon glyphicon-list">&nbsp</i>任务管理</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li><a href=""><i class="glyphicon glyphicon-log-out">&nbsp</i>mock server</a></li>
+            <li><a href=""><i class="glyphicon glyphicon-wrench">&nbsp</i>测试工具</a></li>
+          </ul>
+        </div>
+
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main " style=" padding-top: 10px;">
+
+    <!-- 功能测试集合 -->
+    <h2 class="sub-header" style="margin-top:0px;margin-bottom: 0px;padding-bottom: 10px;border-bottom-width: 0px;">编辑用例</h2>
+    <div class="input-group">
+        <span class="input-group-addon"> URL</span>
+        <input id="req_url" type="text" class="form-control" placeholder="http://">
+    </div>
+    <br>
+    <div class="control-group">
+    <label>* 请求方法</label>
+        <label class="radio-inline"><input type="radio" name="req_method" id="get" value="get"/>GET</label>
+        <label class="radio-inline"><input type="radio" name="req_method" id="post"value="post"/>POST</label>
+        <label class="radio-inline"><input type="radio" name="req_method" id="put" value="put"/>PUT</label>
+        <label class="radio-inline"><input type="radio" name="req_method"  id="delete" value="delete"/>DELETE</label>
+    </div>
+    <div class="input-group">
+        <span class="input-group-addon">headers</span>
+        <input id="header" type="text" class="form-control" placeholder="header={'Content-Type':'application/json;charset=utf-8'}">
+    </div>
+    <br>
+    <div class="control-group">
+         <label>* 参数类型: </label>
+         <label class="radio-inline"><input type="radio" name="req_type" id="form_data" value="form_data"/>form-data</label>
+         <label class="radio-inline"><input type="radio" name="req_type" id="json_data"value="json_data" />Json</label>
+    </div>
+    <div class="input-group">
+        <span class="input-group-addon">参数</span>
+        <input id="parameter" type="text" class="form-control"  placeholder='字典形式:{"id":id,"name":"name"}'>
+    </div>
+    <button type="button" class="btn btn-primary" onclick="sendFunc()" style="float: right;margin-top: 10px">send</button>
+    <div style="margin-top: 20px;">
+        <label>* 返回数据:</label>
+        <textarea id="result" class="form-control" rows="5" name="text"></textarea>
+    </div>
+
+    <button type="button" class="btn btn-primary" onclick="assertFunc()" style="float: right;margin-top: 10px">assert</button>
+    <div style="margin-top: 20px;">
+        <label>* 断言规则:</label>
+         <label class="radio-inline"><input type="radio" name="assert_type" id="contains" value="contains"/>contains</label>
+         <label class="radio-inline"><input type="radio" name="assert_type" id="matches"value="matches" />matches</label>
+        <textarea id="assert" class="form-control" rows="5" name="text"></textarea>
+    </div>
+    <div style="margin-top: 20px;">
+          <label style="float: left">选择项目</label>
+        <select class="form-control select2-sigle"id="selectProject" style="width: 180px"></select>
+        <label style="float: left">选择模块</label>
+        <select class="form-control select2-sigle"id="selectModule" style="width: 180px"></select>
+    </div>
+
+    <div class="input-group" style="top: 20px;width: 620px;">
+        <span class="input-group-addon"> 功能测试集</span>
+        <input id="case_name" name = "case_name" type="text" class="form-control"  placeholder='请输入用例'>
+    </div>
+    <button type="button" class="btn btn-primary" onclick="saveFunc()" style="margin-top: 23px;margin-left: 565px;">save</button>
+
+        </div>
+      </div>
+    </div>
+
+    <!--<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>-->
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.10/dist/css/bootstrap-select.min.css">-->
+    <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.10/dist/js/bootstrap-select.min.js"></script>-->
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+    <script type="text/javascript">
+
+        //测试用例初始化:
+        TestCaseInit();
+    //发送
+    function sendFunc(){
+        var url= $("#req_url").val();
+        var method = $('input[name="req_method"]:checked').val();
+        var header= $("#header").val();
+        var type= $('input[name="req_type"]:checked').val();
+        var parameter= $("#parameter").val();
+
+        if(url === ""){
+            window.alert("url不能为空");
+            return;
+        }
+        $.post("/testcase/debug",
+        {
+            url: url,
+            method: method,
+            header: header,
+            type: type,
+            parameter: parameter
+        },
+         function (data,status){
+            document.querySelector("#result").value=data.result;
+            });}
+
+    //断言:
+    function assertFunc() {
+        var assert_type = $('input[name="assert_type"]:checked').val();
+        var result_text = $("#result").val();
+        var assert_text = $("#assert").val();
+        console.log("得到结果",result_text);
+        console.log("断言结果",assert_text);
+
+        if(result_text === "" || assert_text === ""){
+            window.alert("文本不能为空");
+            return;
+        }
+
+         $.post("/testcase/asserts",
+        {
+            result: result_text,
+            asserts: assert_text,
+            assert_type:assert_type,
+        },
+         function (data,status){
+             alert("数据: " + data.result)
+             console.log("返回数据",data.result)
+            });
+    };
+
+    //测试用例保存:
+    function saveFunc() {
+        //接口的基本参数
+        var url= $("#req_url").val();
+        var method = $('input[name="req_method"]:checked').val();
+        var header= $("#header").val();
+        var parameter_type= $('input[name="req_type"]:checked').val();
+        var parameter_body= $("#parameter").val();
+        //断言的信息
+        var assert_type= $("input[name='assert_type']:checked").val();
+        var assert_body= $("#assert").val();
+        // 保存的数据
+        let module_id = $("select[id='selectModule']").val();
+        let case_name = $("#case_name").val();
+
+        if(url === ""){
+            window.alert("url不能为空");
+            return;
+        }else if (assert_type ==="" || assert_body ===""){
+                window.alert("断言类型不能为空");
+                return;
+        }else if (case_name ===""){
+                window.alert("用例名称不能为空");
+                return;
+        }else if (module_id ===""){
+                window.alert("模块id不能为空不能为空");
+                return;
+        }
+        $.post("/testcase/save_case",
+        {
+            url: url,
+            method: method,
+            header: header,
+            parameter_type: parameter_type,
+            parameter_body: parameter_body,
+            assert_body: assert_body,
+            assert_type:assert_type,
+            mid :module_id,
+            name : case_name,
+        },
+         function (data){
+            console.log("返回数据: ", data);
+            window.alert(data.message);
+         });
+    };
+
+        </script>
+
+
+{% endblock %}
+</body>
+</html>

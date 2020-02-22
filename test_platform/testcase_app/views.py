@@ -2,20 +2,92 @@ from django.shortcuts import render
 import requests
 import json
 from django.http import JsonResponse
+from django.http import HttpResponseRedirect
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-from model_app.forms import ModelForm
+from project_app.models import Project
 from model_app.models import Module
-from testcase_app.models import TestCase #abc
+from testcase_app.models import TestCase
 
 
 def case_manage(request):
     #用例列表
     case_list=TestCase.objects.all()
-    return render(request,"case_list.html",{"cases": case_list})
+    paginator = Paginator(case_list,5)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        contacts=paginator.page(1)
+    except EmptyPage:
+        contacts=paginator.page(paginator.num_pages)
+    return render(request,"case_list.html",{"cases": contacts})
 
 def case_add(request):
     return render(request, "case_add.html")
 
+# 编辑用例
+def case_edit(request,cid):
+    return render(request,"case_edit.html")
+
+# 删除用例:
+def case_del(request,cid):
+    case = TestCase.objects.get(id=cid)
+    case.delete()
+    return HttpResponseRedirect("/testcase/")
+
+#项目模块二级联动:
+def get_select_data(request):
+    if request.method == "GET":
+        projects = Project.objects.all()
+        data_list = []
+        for project in projects:
+            project_dict={
+                "id":project.id,
+                "name":project.name
+            }
+            modules = Module.objects.filter(project_id=project.id)
+            module_list=[]
+            for module in modules:
+                module_list.append({
+                    "id":module.id,
+                    "name":module.name,
+                })
+            project_dict["moduleList"] = module_list
+            data_list.append(project_dict)
+        return JsonResponse({"status": 10200, "message": "create success!", "data": data_list})
+    else:
+        return JsonResponse({"status": 10100, "message": "error"})
+
+
+
+
+# 获取接口数据
+def get_case_info(request):
+    if request.method == "POST":
+        cid= request.POST.get("cid","")
+        case= TestCase.objects.get(id=cid)
+        module = Module.objects.get(id=case.module.id)
+        project_id=module.project.id
+        case_dict={
+            "id":case.id,
+            "url":case.url,
+            "name":case.name,
+            "method":case.methods,
+            "header":case.headers,
+            "parameter_type":case.parameter_type,
+            "parameter_body":case.parameter_body,
+            "assert_type":case.assert_type,
+            "assert_body":case.assert_body,
+            "module_id":case.module.id,
+            "project_id":project_id
+        }
+
+
+
+        return JsonResponse({"status": 10200, "message": "create success!","data":case_dict})
+    else:
+        return JsonResponse({"status": 10100, "message": "error"})
 
 
 
