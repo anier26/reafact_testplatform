@@ -35,6 +35,6 @@ urlpatterns = [
     path('testcase/', include('testcase_app.urls')),
 
     #任务管理
-    path('testtask/', include('testtask_app.urls')),
+    path('testTask/', include('testTask_app.urls')),
 
 ]

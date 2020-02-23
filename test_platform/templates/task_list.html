@@ -60,7 +60,7 @@
     {% if type == "list" %}
     <h4 class="sub-header">任务列表
         <button type="button" class="btn btn-sm btn-primary button-primary"
-        style="float: right;" onclick="location.href='/testtask/task_add'">创建</button>
+        style="float: right;" onclick="location.href='/testTask/task_add'">创建</button>
     </h4>
     <div class="table-responsive">
         <table class="table table-striped">
@@ -69,8 +69,8 @@
       <tr>
         <th>id</th>
         <th>名称</th>
-        <th>URL</th>
-        <th>方法</th>
+        <th>描述</th>
+        <th>status</th>
         <th>创建时间</th>
         <th>快捷操作</th>
       </tr>
@@ -80,34 +80,38 @@
       <tr>
         <td>{{task.id}}</td>
         <td>{{task.name}}</td>
-        <td>{{task.url}}</td>
-        {% if task.methods == 1%}
-            <td>GET</td>
-        {% endif%}
-        {% if task.methods == 2%}
-          <td>POST</td>
-      {% endif%}
-        <td>{{case.create_time |date:"y-m-d H:i:s"}}</td>
-        <td><a href="/testtask/task_edit/{{tasks.id}}/">
-              <i class="glyphicon glyphicon-pencil"></i>
+        <td>{{task.describe}}</td>
+        <td>{{task.status}}</td>
+        <td>{{task.create_time |date:"y-m-d H:i:s"}}</td>
+        <td><a href="#" onclick="RunTask('{{task.id}}')" style="margin-right: 8px;">
+            <span class="glyphicon glyphicon-play"></span>
             </a>
-            <a href="/testtask/task_del/{{task.id}}/">
-              <i class="glyphicon glyphicon-trash"></i>
+            <a href="/testTask/edit_task/{{tasks.id}}/" style="margin-right: 8px;">
+                <span class="glyphicon glyphicon-edit"></span>
             </a>
+            <a href="#" onclick="DeleteTask('{{task.id}}')" style="margin-right: 8px;">
+                <span class="glyphicon glyphicon-trash"></span>
+            </a>
+            <a href="/testTask/task_reslt_list/{{tasks.id}}/" style="margin-right: 8px;">
+                <span class="glyphicon glyphicon-list-alt"></span>
+            </a>
+
         </td>
       </tr>
 
     {% endfor %}
+      {% endif %}
                 </tbody>
             </table>
         </div>
-    {% endif %}
 
     {% if type == "add" %}
         {% block task_add %}
             <!-- 其他页面可以继承task_list.html页面 -->
         {% endblock %}
     {% endif %}
+
+
 
     </div>
   </div>

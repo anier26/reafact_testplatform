@@ -26,18 +26,78 @@
 <script src="http://cdn.bootcss.com/zTree.v3/3.5.23/js/jquery.ztree.all.js"></script>
 <script type="text/javascript">
     // 初始化用例树:
-    caseTreeInit();
+//    caseTreeInit();
 
-   function saveFunc() {
-       window.alert("click save");
-       var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-       var nodes = treeObj.getCheckedNodes(true);
-       console.log("nodes:",nodes);
-       for(let i=0; i<nodes.length; i++){
-            console.log("选中的节点",nodes[i].name);
-       }
+//   function saveFunc() {
+//       var cases = Array();
+//       var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+//       var nodes = treeObj.getCheckedNodes(true);
+//       console.log("nodes:",nodes);
+//       for(let i=0; i<nodes.length; i++){
+//           if(nodes[i].isParent == false){
+//               console.log("用例id:",nodes[i].id,nodes[i].name)
+//               cases.push(nodes[i].id)
+//           }
+//       }
+//        console.log("用例列表",cases);
+//   }
 
-   }
+    var zTreeObj;
+
+    var setting = {
+        check:{
+            enable:true,
+            chKStyle:"checkbox"
+        }
+    };
+
+    $(document).ready(function () {
+        // 调用获取用例树:
+        $.get("/testTask/get_case_tree",{},function (resp){
+            if(resp.status  === 10200){
+                var zNodes = resp.data;
+                zTreeObj = $.fn.zTree.init($("#treeDemo"),setting,zNodes);
+                zTreeObj.expandAll(true);
+            }
+        });
+    });
+
+    //保存用例:
+    function saveFunc(){
+        //接口的基本数据
+        let name = $("#name").val();
+        let desc = $("#desc").val();
+        if(name === ""){
+            window.alert("任务名称不能为空");
+            return;
+        }
+        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+        var nodes = treeObj.getCheckedNodes(true);
+
+        var cases = new Array();
+        for(var  i=0; i<nodes.length; i++){
+            if(nodes[i].isParent == false){
+                console.log("节点id" + nodes[i].id);
+                cases.push(nodes[i].id);
+            }
+        }
+        //将列表转成字符串:
+        casesStr = JSON.stringify(cases)
+        $.post("/testTask/save_task",{
+            name:name,
+            desc:desc,
+            cases:casesStr
+        },
+        function (resp) {
+            if(resp.status == 10200){
+                window.alert("创建任务成功")
+            }
+        });
+    };
+
+
+
+
     </script>
     </div>
 {% endblock %}

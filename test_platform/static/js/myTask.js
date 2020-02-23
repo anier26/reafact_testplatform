@@ -36,7 +36,7 @@ var caseTreeInit = function () {
    //      }
    //     ];
    $(document).ready(function(){
-       $.get("/testtask/get_case_tree",{
+       $.get("/testTask/get_case_tree",{
        },function(resp){
            if(resp.status == 10200){
                // window.alert("获取成功!")

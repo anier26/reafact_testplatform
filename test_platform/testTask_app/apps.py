@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class TesttaskAppConfig(AppConfig):
-    name = 'testtask_app'
+    name = 'testTask_app'

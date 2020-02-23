@@ -41,8 +41,7 @@ INSTALLED_APPS = [
     'model_app',
     'base_app',
     'testcase_app',
-    'testtask_app',
-
+    'testTask_app',
 ]
 
 MIDDLEWARE = [
