@@ -4,6 +4,7 @@ from project_app.models import Project
 from model_app.models import Module
 from django.http import JsonResponse
 from testTask_app.models import TestTask
+from testcase_app.models import TestCase
 
 
 def task_manage(request):
@@ -13,8 +14,8 @@ def task_manage(request):
 def task_add(request):
     return render(request,"task_add.html",{"type":"add"})
 
-def edit_task(resquest,tid):
-    return render(resquest, "task_edit.html",{"type":"edit"})
+def edit_task(request,tid):
+    return render(request, "task_edit.html",{"type":"edit"})
 
 
 # 保存任务:

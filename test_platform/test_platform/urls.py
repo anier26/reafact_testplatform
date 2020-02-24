@@ -36,5 +36,6 @@ urlpatterns = [
 
     #任务管理
     path('testTask/', include('testTask_app.urls')),
+    path('testtask/', include('testTask_app.urls')),
 
 ]

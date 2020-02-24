@@ -102,7 +102,7 @@ var selectInit = function (defaultProjectId,defaultModultId) {
 
     function getSelectData() {
         //调用select数据列表
-        $.get("/testTask/get_select_data",{},function (resp) {
+        $.get("/testcase/get_select_data",{},function (resp) {
             if(resp.status === 10200) {
                 dataList = resp.data;
                 console.log("想要的数据格式:",dataList)
@@ -131,7 +131,7 @@ var selectInit = function (defaultProjectId,defaultModultId) {
      var url= document.location;
      var cid=url.pathname.split("/")[3];
 
-       $.post("/testTask/get_case_info",
+       $.post("/testcase/get_case_info",
         {
             cid: cid,
         },
