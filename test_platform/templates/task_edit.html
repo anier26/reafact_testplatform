@@ -1,47 +1,53 @@
 {% extends "task_list.html" %}
-{% block task_add %}
+{% block taskedit %}
 
     <div>
         <!-- 功能测试集合 -->
-        <h2 class="sub-header" style="margin-top:0px;margin-bottom: 0px;padding-bottom: 10px;border-bottom-width: 0px;">创建任务</h2>
+        <h2 class="sub-header" style="margin-left: 230px;">编辑任务</h2>
 
-        <div style="margin-top: 10px;">
+        <div style="margin-left: 230px;">
             <p>* 任务名称:</p>
             <input id="name" class="form-control" ></input>
         </div>
-        <div style="margin-top: 10px;">
-            <p>* 任务描述:</p>
+        <div style="margin-left: 230px;" >
+            <p style="margin-top: 20px;"> 任务描述:</p>
             <textarea id="desc" class="form-control" rows="3" name="text"></textarea>
         </div>
 
-         <div style="margin-top: 10px;">
-            <p>* 任务列表:</p>
-             <ul id="treeDemo" class="ztree"></ul>
+        <div style="margin-left: 230px;" >
+            <p style="margin-top: 20px;">用例列表:</p>
+            <ul id="treeDemo" class="ztree"></ul>
         </div>
+    </div>
 
         <button type="button" class="btn btn-primary" onclick="saveFunc()" style="margin-top: 20px;margin-left: 930px;">save</button>
-
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <link href="http://cdn.bootcss.com/zTree.v3/3.5.23/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
 <script src="http://cdn.bootcss.com/zTree.v3/3.5.23/js/jquery.ztree.all.js"></script>
-<script type="text/javascript">
-    // 初始化用例树:
-    caseTreeInit();
 
+    <script type="text/javascript">
+//         zTree 的数据属性，深入使用请参考 API 文档（zTreeNode 节点数据详解）
     var zTreeObj;
 
     var setting = {
         check:{
             enable:true,
-            chKStyle:"checkbox"
+            chkStyle:"checkbox"
         }
     };
 
-    $(document).ready(function () {
+    $(document).ready(function (){
+        let local_url = document.location;
+        let tid = local_url.pathname.split("/")[3];
+        console.log("任务id:", tid);
         // 调用获取用例树:
-        $.get("/testTask/get_case_tree",{},function (resp){
+        $.post("/testTask/get_case_tree",{
+            "tid":tid,
+        },function (resp){
             if(resp.status  === 10200){
-                var zNodes = resp.data;
+                document.querySelector("#name").value = resp.data.name
+                document.querySelector("#desc").value = resp.data.desc
+                var zNodes = resp.data.cases;
                 zTreeObj = $.fn.zTree.init($("#treeDemo"),setting,zNodes);
                 zTreeObj.expandAll(true);
             }
@@ -81,7 +87,6 @@
         });
     };
 
-
     </script>
-    </div>
+
 {% endblock %}
