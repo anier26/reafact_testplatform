@@ -18,9 +18,10 @@ def edit_task(request,tid):
     return render(request, "task_edit.html",{"type":"edit"})
 
 
-# 保存任务:
+# 保存任务: 创建和编辑taskid= 0 创建,id不等于更新
 def save_task(request):
     if request.method == "POST":
+        task_id = request.POST.get("task_id","");
         name= request.POST.get("name","")
         desc =request.POST.get("desc","")
         cases=request.POST.get("cases","")
@@ -28,7 +29,15 @@ def save_task(request):
         print("用例",type(cases),cases)
         if name == "" or cases =="":
             return JsonResponse({"status":10102,"message":"参数不能为空"})
-        TestTask.objects.create(name=name,describe=desc,cases=cases)
+
+        if task_id == "0":
+            TestTask.objects.create(name=name,describe=desc,cases=cases)
+        else:
+            task=TestTask.objects.get(id=task_id)
+            task.name=name
+            task.describe=desc
+            task.cases=cases
+            task.save()
         return JsonResponse({"status":10200,"message":"success"})
     else:
         return JsonResponse({"status":10101,"message":"请求方法错误"})

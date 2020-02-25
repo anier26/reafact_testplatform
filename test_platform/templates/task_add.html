@@ -69,6 +69,7 @@
         //将列表转成字符串:
         casesStr = JSON.stringify(cases)
         $.post("/testTask/save_task",{
+            task_id:0,
             name:name,
             desc:desc,
             cases:casesStr
