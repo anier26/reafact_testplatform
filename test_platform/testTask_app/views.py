@@ -23,8 +23,6 @@ def del_task(request,tid):
     return HttpResponseRedirect("/testTask/")
 
 
-
-
 # 保存任务: 创建和编辑taskid= 0 创建,id不等于更新
 def save_task(request):
     if request.method == "POST":

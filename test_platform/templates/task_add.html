@@ -42,7 +42,7 @@
             if(resp.status  === 10200){
                 var zNodes = resp.data;
                 zTreeObj = $.fn.zTree.init($("#treeDemo"),setting,zNodes);
-                zTreeObj.expandAll(false);
+                zTreeObj.expandAll(true);
             }
         });
     });

@@ -73,16 +73,15 @@
         <td><a href="#" onclick="RunTask('{{task.id}}')" style="margin-right: 8px;">
             <span class="glyphicon glyphicon-play"></span>
             </a>
+             <a href="/testTask/task_reslt_list/{{task.id}}/" style="margin-right: 8px;">
+                <span class="glyphicon glyphicon-list-alt"></span>
+            </a>
             <a href="/testTask/edit_task/{{task.id}}/" style="margin-right: 8px;">
                 <span class="glyphicon glyphicon-edit"></span>
             </a>
             <a href="/testTask/del_task/{{task.id}}/" style="margin-right: 8px;">
                 <span class="glyphicon glyphicon-trash"></span>
             </a>
-            <a href="/testTask/task_reslt_list/{{task.id}}/" style="margin-right: 8px;">
-                <span class="glyphicon glyphicon-list-alt"></span>
-            </a>
-
         </td>
       </tr>
 
@@ -107,4 +106,11 @@
     </div>
   </div>
 </div>
+
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+<!--<script type="text/javascript">-->
+
+    <!--</script>-->
+
 {% endblock %}
