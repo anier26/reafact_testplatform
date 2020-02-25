@@ -69,7 +69,6 @@ def get_cases_tree(request):
         if tid == "":
             return JsonResponse({"status": 10101, "message": "error!任务id不能为空"})
 
-
         task = TestTask.objects.get(id=tid)
         caselist=json.loads(task.cases)
         task_data = {
@@ -98,14 +97,14 @@ def get_cases_tree(request):
                             "name": case.name,
                             "isParent": False,
                             "id": case.id,
-                            "checked":True
+                            "checked":True,
                         }
                     else:
                         case_dict = {
                             "name": case.name,
                             "isParent": False,
                             "id": case.id,
-                            "checked": False
+                            "checked": False,
                         }
                     case_list.append(case_dict)
                 module_dict["children"] = case_list

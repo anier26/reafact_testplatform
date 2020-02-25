@@ -45,8 +45,8 @@
             "tid":tid,
         },function (resp){
             if(resp.status  === 10200){
-                document.querySelector("#name").value = resp.data.name
-                document.querySelector("#desc").value = resp.data.desc
+                document.querySelector("#name").value = resp.data.name;
+                document.querySelector("#desc").value = resp.data.desc;
                 var zNodes = resp.data.cases;
                 zTreeObj = $.fn.zTree.init($("#treeDemo"),setting,zNodes);
                 zTreeObj.expandAll(true);
@@ -55,37 +55,40 @@
     });
 
     //保存用例:
-    function saveFunc(){
-        //接口的基本数据
-        let name = $("#name").val();
-        let desc = $("#desc").val();
-        if(name === ""){
-            window.alert("任务名称不能为空");
-            return;
-        }
-        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-        var nodes = treeObj.getCheckedNodes(true);
-
-        var cases = new Array();
-        for(var  i=0; i<nodes.length; i++){
-            if(nodes[i].isParent == false){
-                console.log("节点id" + nodes[i].id);
-                cases.push(nodes[i].id);
-            }
-        }
-        //将列表转成字符串:
-        casesStr = JSON.stringify(cases)
-        $.post("/testTask/save_task",{
-            name:name,
-            desc:desc,
-            cases:casesStr
-        },
-        function (resp) {
-            if(resp.status == 10200){
-                window.alert("创建任务成功")
-            }
-        });
-    };
+//    function saveFunc(){
+//        //接口的基本数据
+//        let name = $("#name").val();
+//        let desc = $("#desc").val();
+//        let local_url = document.location;
+//        let tid = local_url.pathname.split("/")[3];
+//        if(name === ""){
+//            window.alert("任务名称不能为空");
+//            return;
+//        }
+//        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+//        var nodes = treeObj.getCheckedNodes(true);
+//
+//        var cases = new Array();
+//        for(var  i=0; i<nodes.length; i++){
+//            if(nodes[i].isParent == false){
+//                console.log("节点id" + nodes[i].id);
+//                cases.push(nodes[i].id);
+//            }
+//        }
+//        //将列表转成字符串:
+//        casesStr = JSON.stringify(cases)
+//        $.post("/testTask/save_task",{
+//            task_id:tid,
+//            name:name,
+//            desc:desc,
+//            cases:casesStr
+//        },
+//        function (resp) {
+//            if(resp.status == 10200){
+//                window.alert("创建任务成功")
+//            }
+//        });
+//    };
 
     </script>
 
