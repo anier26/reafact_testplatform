@@ -2,7 +2,7 @@ import json
 from django.shortcuts import render
 from project_app.models import Project
 from model_app.models import Module
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponseRedirect
 from testTask_app.models import TestTask
 from testcase_app.models import TestCase
 
@@ -16,6 +16,13 @@ def task_add(request):
 
 def edit_task(request,tid):
     return render(request, "task_edit.html",{"type":"edit"})
+
+def del_task(request,tid):
+    task=TestTask.objects.get(id=tid)
+    task.delete()
+    return HttpResponseRedirect("/testTask/")
+
+
 
 
 # 保存任务: 创建和编辑taskid= 0 创建,id不等于更新
