@@ -109,8 +109,21 @@
 
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 
-<!--<script type="text/javascript">-->
+<script type="text/javascript">
 
-    <!--</script>-->
+          //发送
+    function RunTask(tid){
+        console.log("运行的任务id:", tid);
+        $.post("/testTask/run_task",
+        {
+            task_id: tid,
+        },
+         function (data,status){
+            alert("数据:" +data.message);
+            });
+    }
+
+
+</script>
 
 {% endblock %}

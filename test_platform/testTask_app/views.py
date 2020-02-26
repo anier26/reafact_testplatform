@@ -1,4 +1,5 @@
 import json
+import os
 from django.shortcuts import render
 from project_app.models import Project
 from model_app.models import Module
@@ -21,6 +22,56 @@ def del_task(request,tid):
     task=TestTask.objects.get(id=tid)
     task.delete()
     return HttpResponseRedirect("/testTask/")
+
+
+def run_task(request):
+    if request.method == "POST":
+        tid=request.POST.get("task_id","")
+        if tid == "":
+            return JsonResponse({"status":10101,"message": "task id is not null"})
+        task=TestTask.objects.get(id=tid)
+        caselist=json.loads(task.cases)
+        print(caselist)
+        test_data={}
+        for cid in caselist:
+            print("wtf " , cid)
+            case = TestCase.objects.get(id=cid)
+            if case.methods == 1:
+                methods = "get"
+            if case.methods == 2:
+                methods = "post"
+            else:
+                methods = "null"
+            if case.parameter_type == 1:
+                parameter_type = "form_data"
+            else:
+                parameter_type = "json_data"
+
+            if case.assert_type == 1:
+                assert_type = "contains"
+            else:
+                assert_type = "matches"
+            test_data[case.id] ={
+                "url":case.url,
+                "methods":methods,
+                "headers":case.headers,
+                "parameter_type":case.parameter_type,
+                "parameter_body":case.parameter_body,
+                "assert_type":case.assert_type,
+                "assert_body":case.assert_body,
+            }
+        print("任务下用例: ", json.dumps(test_data))
+        from test_platform import settings
+        ex_dir = settings.BASE_DIR +"\\testTask_app\\extend\\"
+        print("==================>>>",ex_dir)
+        with(open(ex_dir + "test_data_list.json","w")) as f:
+            f.write(json.dumps(test_data))
+        cmdconfig = "pytest -vs " + ex_dir + "run_task.py --junitxml=" +ex_dir+"./log.xml"
+        print("==================>>>", cmdconfig)
+        os.system(cmdconfig)
+        return JsonResponse({"status": 10200, "message": "success"})
+    else:
+        return JsonResponse({"status": 10200, "message": "faild"})
 
 
 # 保存任务: 创建和编辑taskid= 0 创建,id不等于更新
