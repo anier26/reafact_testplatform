@@ -1,26 +1,48 @@
 {% extends "task_list.html" %}
-{% block taskadd %}
+{% block taskresult %}
 
     <div>
         <!-- 功能测试集合 -->
-        <h2 class="sub-header" style="margin-left: 230px;">创建任务</h2>
+        <h2 class="sub-header" >任务执行结果</h2>
+           <div class="table-responsive">
+        <table class="table table-striped">
 
-        <div style="margin-left: 230px;">
-            <p>* 任务名称:</p>
-            <input id="name" class="form-control" ></input>
-        </div>
-        <div style="margin-left: 230px;" >
-            <p style="margin-top: 20px;"> 任务描述:</p>
-            <textarea id="desc" class="form-control" rows="3" name="text"></textarea>
-        </div>
+    <thead>
+      <tr>
+        <th>名称</th>
+        <th>失败</th>
+        <th>错误</th>
+        <th>跳过</th>
+        <th>用例</th>
+        <th>运行时间</th>
+        <th>快捷操作</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for r in results %}
+      <tr>
+        <td>{{r.name}}</td>
+        <td>{{r.error}}</td>
+        <td>{{r.failure}}</td>
+        <td>{{r.tests}}</td>
+        <td>{{r.skipped}}</td>
+        <td>{{r.tests}}</td>
+        <td>{{r.run_time}}</td>
 
-        <div style="margin-left: 230px;" >
-            <p style="margin-top: 20px;">任务列表:</p>
-            <ul id="treeDemo" class="ztree"></ul>
-        </div>
+
+        <td>
+             <a href="/testTask/result/{{task.id}}/" style="margin-right: 8px;">
+                <span class="glyphicon glyphicon-list-alt"></span>
+            </a>
+        </td>
+      </tr>
+
+    {% endfor %}
+                </tbody>
+            </table>
+    </div>
     </div>
 
-        <button type="button" class="btn btn-primary" onclick="saveFunc()" style="margin-top: 20px;margin-left: 930px;">save</button>
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <link href="http://cdn.bootcss.com/zTree.v3/3.5.23/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
 <script src="http://cdn.bootcss.com/zTree.v3/3.5.23/js/jquery.ztree.all.js"></script>

@@ -57,7 +57,7 @@
         <th>id</th>
         <th>名称</th>
         <th>描述</th>
-        <th>status</th>
+        <th>执行状态</th>
         <th>创建时间</th>
         <th>快捷操作</th>
       </tr>
@@ -68,12 +68,21 @@
         <td>{{task.id}}</td>
         <td>{{task.name}}</td>
         <td>{{task.describe}}</td>
-        <td>{{task.status}}</td>
+        {% if task.status == 0%}
+            <td>未执行</td>
+        {% endif%}
+        {% if task.status == 1%}
+            <td>执行中</td>
+        {% endif%}
+        {% if task.status == 2%}
+            <td>执行完成</td>
+        {% endif%}
+
         <td>{{task.create_time |date:"y-m-d H:i:s"}}</td>
         <td><a href="#" onclick="RunTask('{{task.id}}')" style="margin-right: 8px;">
             <span class="glyphicon glyphicon-play"></span>
             </a>
-             <a href="/testTask/task_reslt_list/{{task.id}}/" style="margin-right: 8px;">
+             <a href="/testTask/result/{{task.id}}/" style="margin-right: 8px;">
                 <span class="glyphicon glyphicon-list-alt"></span>
             </a>
             <a href="/testTask/edit_task/{{task.id}}/" style="margin-right: 8px;">
@@ -86,10 +95,11 @@
       </tr>
 
     {% endfor %}
-      {% endif %}
                 </tbody>
             </table>
-        </div>
+    </div>
+
+      {% endif %}
 
         {% if type == "add" %}
             {% block taskadd %}
@@ -103,6 +113,12 @@
             {% endblock%}
         {% endif %}
 
+         {% if type == "result" %}
+            {% block taskresult%}
+
+            {% endblock%}
+        {% endif %}
+
     </div>
   </div>
 </div>
@@ -111,17 +127,21 @@
 
 <script type="text/javascript">
 
-          //发送
-    function RunTask(tid){
+    //发送
+    function RunTask(tid) {
         console.log("运行的任务id:", tid);
         $.post("/testTask/run_task",
         {
-            task_id: tid,
+            task_id: tid
         },
-         function (data,status){
-            alert("数据:" +data.message);
-            });
+        function (resp) {
+            if (resp.status == 10200) {
+                window.alert(resp.message);
+                window.location.reload();
+            }
+        });
     }
+
 
 
 </script>

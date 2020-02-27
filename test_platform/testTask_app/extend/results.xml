@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+	<testsuite errors="0" failures="0" file=".py" name="InterfaceTest-20200227224418" skipped="0" tests="1" time="0.005" timestamp="2020-02-27T22:44:18">
+		<testcase classname="InterfaceTest" file="testTask_app\extend\run_task.py" line="17" name="test_run_cases_00001_1" time="0.005" timestamp="2020-02-27T22:44:18">
+			<!--test_run_cases_00001_1-->
+			<system-out>
+<![CDATA[]]>			</system-out>
+			<system-err>
+<![CDATA[]]>			</system-err>
+		</testcase>
+	</testsuite>
+</testsuites>
