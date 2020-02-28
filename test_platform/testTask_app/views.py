@@ -1,4 +1,6 @@
 import json
+from unittest import TestResult
+
 from testTask_app.extend.task_thread import TaskThread
 from django.shortcuts import render
 from project_app.models import Project
@@ -28,12 +30,12 @@ def run_task(request):
     if request.method == "POST":
         tid=request.POST.get("task_id","")
         if tid == "":
-            return JsonResponse({"status":10200,"message": "task id is not null"})
+            return JsonResponse({"status":10202,"message": "task id is not null"})
 
         tasks=TestTask.objects.all()
         for i in tasks:
             if i.status == 1:
-                return JsonResponse({"status": 10200, "message": "任务执行中请稍等..."})
+                return JsonResponse({"status": 10201, "message": "任务执行中请稍等..."})
 
         task = TestTask.objects.get(id=tid)
         task.status = 1
@@ -41,7 +43,7 @@ def run_task(request):
         TaskThread(tid).run()
         return JsonResponse({"status": 10200, "message": "开始执行"})
     else:
-        return JsonResponse({"status": 10200, "message": "执行失败"})
+        return JsonResponse({"status": 10203, "message": "执行失败"})
 
 
 # 保存任务: 创建和编辑taskid= 0 创建,id不等于更新
@@ -153,3 +155,15 @@ def get_cases_tree(request):
 def result(request,tid):
     results = TaskResult.objects.filter(task_id=tid).order_by("-create_time")
     return render(request, "task_result.html",{"results": results,"type":"result"})
+
+
+def see_log(request):
+    if request.method == "POST":
+        rid = request.POST.get("result_id", "")
+        if rid == "":
+            return JsonResponse({"status": 10105, "message": "任务id不能为空"})
+        result = TaskResult.objects.get(id = rid)
+        result.result
+        return JsonResponse({"status": 10200, "message": "success","data":result.result})
+    else:
+        return JsonResponse({"status": 10101, "message": "请求方法错误"})

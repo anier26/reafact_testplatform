@@ -1,8 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-	<testsuite errors="0" failures="0" file=".py" name="InterfaceTest-20200227224418" skipped="0" tests="1" time="0.005" timestamp="2020-02-27T22:44:18">
-		<testcase classname="InterfaceTest" file="testTask_app\extend\run_task.py" line="17" name="test_run_cases_00001_1" time="0.005" timestamp="2020-02-27T22:44:18">
+	<testsuite errors="0" failures="0" file=".py" name="InterfaceTest-20200228152123" skipped="0" tests="9" time="0.014" timestamp="2020-02-28T15:21:23">
+		<testcase classname="InterfaceTest" file="testTask_app\extend\run_task.py" line="17" name="test_run_cases_00001_1" time="0.005" timestamp="2020-02-28T15:21:23">
 			<!--test_run_cases_00001_1-->
+			<system-out>
+<![CDATA[]]>			</system-out>
+			<system-err>
+<![CDATA[]]>			</system-err>
+		</testcase>
+		<testcase classname="InterfaceTest" file="testTask_app\extend\run_task.py" line="17" name="test_run_cases_00002_20" time="0.001" timestamp="2020-02-28T15:21:23">
+			<!--test_run_cases_00002_20-->
+			<system-out>
+<![CDATA[]]>			</system-out>
+			<system-err>
+<![CDATA[]]>			</system-err>
+		</testcase>
+		<testcase classname="InterfaceTest" file="testTask_app\extend\run_task.py" line="17" name="test_run_cases_00003_21" time="0.002" timestamp="2020-02-28T15:21:23">
+			<!--test_run_cases_00003_21-->
+			<system-out>
+<![CDATA[]]>			</system-out>
+			<system-err>
+<![CDATA[]]>			</system-err>
+		</testcase>
+		<testcase classname="InterfaceTest" file="testTask_app\extend\run_task.py" line="17" name="test_run_cases_00004_23" time="0.001" timestamp="2020-02-28T15:21:23">
+			<!--test_run_cases_00004_23-->
+			<system-out>
+<![CDATA[]]>			</system-out>
+			<system-err>
+<![CDATA[]]>			</system-err>
+		</testcase>
+		<testcase classname="InterfaceTest" file="testTask_app\extend\run_task.py" line="17" name="test_run_cases_00005_24" time="0.001" timestamp="2020-02-28T15:21:23">
+			<!--test_run_cases_00005_24-->
+			<system-out>
+<![CDATA[]]>			</system-out>
+			<system-err>
+<![CDATA[]]>			</system-err>
+		</testcase>
+		<testcase classname="InterfaceTest" file="testTask_app\extend\run_task.py" line="17" name="test_run_cases_00006_28" time="0.001" timestamp="2020-02-28T15:21:23">
+			<!--test_run_cases_00006_28-->
+			<system-out>
+<![CDATA[]]>			</system-out>
+			<system-err>
+<![CDATA[]]>			</system-err>
+		</testcase>
+		<testcase classname="InterfaceTest" file="testTask_app\extend\run_task.py" line="17" name="test_run_cases_00007_10" time="0.001" timestamp="2020-02-28T15:21:23">
+			<!--test_run_cases_00007_10-->
+			<system-out>
+<![CDATA[]]>			</system-out>
+			<system-err>
+<![CDATA[]]>			</system-err>
+		</testcase>
+		<testcase classname="InterfaceTest" file="testTask_app\extend\run_task.py" line="17" name="test_run_cases_00008_12" time="0.001" timestamp="2020-02-28T15:21:23">
+			<!--test_run_cases_00008_12-->
+			<system-out>
+<![CDATA[]]>			</system-out>
+			<system-err>
+<![CDATA[]]>			</system-err>
+		</testcase>
+		<testcase classname="InterfaceTest" file="testTask_app\extend\run_task.py" line="17" name="test_run_cases_00009_29" time="0.001" timestamp="2020-02-28T15:21:23">
+			<!--test_run_cases_00009_29-->
 			<system-out>
 <![CDATA[]]>			</system-out>
 			<system-err>

@@ -14,26 +14,29 @@
         <th>错误</th>
         <th>跳过</th>
         <th>用例</th>
-        <th>运行时间</th>
-        <th>快捷操作</th>
+        <th>时间</th>
+        <th>日志</th>
       </tr>
     </thead>
     <tbody>
     {% for r in results %}
       <tr>
+        <td>{{r.id}}</td>
         <td>{{r.name}}</td>
         <td>{{r.error}}</td>
         <td>{{r.failure}}</td>
         <td>{{r.tests}}</td>
         <td>{{r.skipped}}</td>
         <td>{{r.tests}}</td>
-        <td>{{r.run_time}}</td>
 
 
         <td>
-             <a href="/testTask/result/{{task.id}}/" style="margin-right: 8px;">
-                <span class="glyphicon glyphicon-list-alt"></span>
-            </a>
+             <div href="/testTask/result/{{task.id}}/" style="margin-right: 8px;">
+                <button class="btn btn-primary btn-sm" data-toggle="modal"
+                        data-target="#myModal" onclick="seeLogFunc('{{r.id}}')">log
+                </button>
+
+             </div>
         </td>
       </tr>
 
@@ -41,68 +44,51 @@
                 </tbody>
             </table>
     </div>
+
     </div>
 
+   <!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					运行日志
+				</h4>
+			</div>
+			<div class="modal-body" id = "log">
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <link href="http://cdn.bootcss.com/zTree.v3/3.5.23/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
 <script src="http://cdn.bootcss.com/zTree.v3/3.5.23/js/jquery.ztree.all.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <script type="text/javascript">
-//         zTree 的数据属性，深入使用请参考 API 文档（zTreeNode 节点数据详解）
-    var zTreeObj;
+        function seeLogFunc(rid){
+            console.log("查看日志!");
 
-    var setting = {
-        check:{
-            enable:true,
-            chkStyle:"checkbox"
+        $.post("/testTask/see_log",
+            {result_id:rid},function (resp) {
+                if(resp.status == 10200) {
+                    console.log(resp.data)
+                    document.querySelector("#log").innerText = resp.data;
+                }
+            });
         }
-    };
-
-    $(document).ready(function () {
-        // 调用获取用例树:
-        $.get("/testTask/get_case_tree",{},function (resp){
-            if(resp.status  === 10200){
-                var zNodes = resp.data;
-                zTreeObj = $.fn.zTree.init($("#treeDemo"),setting,zNodes);
-                zTreeObj.expandAll(true);
-            }
-        });
-    });
-
-    //保存用例:
-    function saveFunc(){
-        //接口的基本数据
-        let name = $("#name").val();
-        let desc = $("#desc").val();
-        if(name === ""){
-            window.alert("任务名称不能为空");
-            return;
-        }
-        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-        var nodes = treeObj.getCheckedNodes(true);
-
-        var cases = new Array();
-        for(var  i=0; i<nodes.length; i++){
-            if(nodes[i].isParent == false){
-                console.log("节点id" + nodes[i].id);
-                cases.push(nodes[i].id);
-            }
-        }
-        //将列表转成字符串:
-        casesStr = JSON.stringify(cases)
-        $.post("/testTask/save_task",{
-            task_id:0,
-            name:name,
-            desc:desc,
-            cases:casesStr
-        },
-        function (resp) {
-            if(resp.status == 10200){
-                window.alert("创建任务成功")
-            }
-        });
-    };
-
+            
+        
+        
     </script>
 
 {% endblock %}
