@@ -169,6 +169,7 @@ def save_case(request):
         assert_type = request.POST.get("assert_type", "")
         module_id = request.POST.get("mid", "")
         name = request.POST.get("name", "")
+        cid = request.POST.get("cid","")
 
 
         print("url",url)
@@ -192,13 +193,13 @@ def save_case(request):
             return JsonResponse({"statusCode": 10103, "status": "error","err_msg":"模块id不能为空"})
 
         if method =="get":
-            module_number =1
+            method_number =1
         elif method == "post":
-            module_number =2
+            method_number =2
         elif method =="put":
-            module_number =3
+            method_number =3
         elif method == "delete":
-            module_number =4
+            method_number =4
         else:
             return JsonResponse({"status": 10100, "message": "error! 未知的请求方法体 "})
 
@@ -217,10 +218,24 @@ def save_case(request):
             assert_number = 2
         else:
             return JsonResponse({"status": 10000, "message": "error! 未知的断言类型"})
-        TestCase.objects.create(name=name,module_id=module_id,
-                            url=url,methods=module_number,headers=header,
-                            parameter_type=parameter_number,parameter_body=parameter_body,
-                            assert_type=assert_number,assert_body=assert_body);
-        return JsonResponse({"status": 10200, "message": "create success!"})
+
+        if cid == "":
+            TestCase.objects.create(name=name,module_id=module_id,
+                                url=url,methods=method_number,headers=header,
+                                parameter_type=parameter_number,parameter_body=parameter_body,
+                                assert_type=assert_number,assert_body=assert_body);
+        else:
+            case = TestCase.objects.get(id = cid)
+            case.name = name
+            case.module_id = module_id
+            case.url = url
+            case.methods = method_number
+            case.headers = header
+            case.parameter_type = parameter_number
+            case.parameter_body = parameter_body
+            case.assert_type = assert_number
+            case.assert_body = assert_body
+            case.save()
+        return JsonResponse({"status": 10200, "message": "save success!"})
     else:
         return JsonResponse({"status": 10100, "message": "error"})

@@ -172,14 +172,17 @@
     //测试用例保存:
     function saveFunc() {
         //接口的基本参数
-        var url= $("#req_url").val();
-        var method = $('input[name="req_method"]:checked').val();
-        var header= $("#header").val();
-        var parameter_type= $('input[name="req_type"]:checked').val();
-        var parameter_body= $("#parameter").val();
+        let local_url= document.location;
+        let cid=local_url.pathname.split("/")[3];
+
+        let url= $("#req_url").val();
+        let method = $('input[name="req_method"]:checked').val();
+        let header= $("#header").val();
+        let parameter_type= $('input[name="req_type"]:checked').val();
+        let parameter_body= $("#parameter").val();
         //断言的信息
-        var assert_type= $("input[name='assert_type']:checked").val();
-        var assert_body= $("#assert").val();
+        let assert_type= $("input[name='assert_type']:checked").val();
+        let assert_body= $("#assert").val();
         // 保存的数据
         let module_id = $("select[id='selectModule']").val();
         let case_name = $("#case_name").val();
@@ -208,6 +211,7 @@
             assert_type:assert_type,
             mid :module_id,
             name : case_name,
+            cid:cid,
         },
          function (data){
             console.log("返回数据: ", data);
